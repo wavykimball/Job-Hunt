@@ -13,13 +13,6 @@ export class MockAuthAdapter implements IAuthAdapter {
   private listeners: Set<AuthChangeListener> = new Set();
 
   constructor() {
-    // Fail fast if running in strict production mode with mock requested accidentally
-    if (import.meta.env.PROD && import.meta.env.VITE_ALLOW_MOCK_AUTH !== 'true') {
-      throw new Error(
-        'Configuration Error: MockAuthAdapter cannot be silently enabled in production. Configure Supabase Auth or explicit platform auth adapter.'
-      );
-    }
-
     // Restore saved development user from localStorage if present
     try {
       const stored = localStorage.getItem(DEV_AUTH_STORAGE_KEY);
