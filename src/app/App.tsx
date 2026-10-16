@@ -59,7 +59,8 @@ export const App: React.FC = () => {
   const [isJobsModalOpen, setIsJobsModalOpen] = useState(false);
   const [pendingJobOffer, setPendingJobOffer] = useState<Company | null>(null);
 
-  // 1a. Listen for start.ng platform user and presence
+  // 1a. Listen for start.ng platform user and presence (Runs cleanly once without looping)
+  const startNgStyleSyncedRef = useRef(false);
   useEffect(() => {
     const checkStartNg = async () => {
       try {
@@ -70,10 +71,16 @@ export const App: React.FC = () => {
           if (!authAdapter.getCurrentUser()) {
             await authAdapter.signIn(p.name);
           }
-          // If style exists and player is loaded, map style to 3D character
-          if (p.style && player) {
+          // If style exists, sync it quietly once on initial connect
+          if (p.style && !startNgStyleSyncedRef.current) {
+            startNgStyleSyncedRef.current = true;
             const mapped = startNgAdapter.mapPlatformStyleToCharacter(p.style);
-            handleSaveAppearance(mapped);
+            const normalized = normalizeCharacterAppearance(mapped);
+            setPlayer((prev) => {
+              if (!prev) return prev;
+              gameStorage.savePlayerAppearance(prev.id, normalized).catch(() => {});
+              return { ...prev, character_config: normalized };
+            });
           }
         }
       } catch {
@@ -88,7 +95,7 @@ export const App: React.FC = () => {
       window.removeEventListener('visibilitychange', checkStartNg);
       window.removeEventListener('focus', checkStartNg);
     };
-  }, [authAdapter, startNgAdapter, player]);
+  }, [authAdapter, startNgAdapter]);
 
   // 1b. Listen for Auth State Changes
   useEffect(() => {
@@ -148,12 +155,14 @@ export const App: React.FC = () => {
   };
 
   // Character Appearance Save
-  const handleSaveAppearance = async (appearance: CharacterAppearance) => {
+  const handleSaveAppearance = async (appearance: CharacterAppearance, playSound = true) => {
     if (!player) return;
     const normalized = normalizeCharacterAppearance(appearance);
     await gameStorage.savePlayerAppearance(player.id, normalized);
     setPlayer((prev) => (prev ? { ...prev, character_config: normalized } : null));
-    audio.playFanfare();
+    if (playSound) {
+      audio.playFanfare();
+    }
   };
 
   // Profile Display Name Update
