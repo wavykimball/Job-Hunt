@@ -51,36 +51,34 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
       title="Player Profile & Career"
       headerVariant="teal"
       footer={
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '10px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', width: '100%' }}>
           <ArcadeButton
             variant="danger"
+            fullWidth
             size="sm"
             onClick={onSignOut}
             style={{
-              minWidth: '95px',
-              height: '38px',
-              padding: '8px 16px',
-              display: 'inline-flex',
-              alignItems: 'center',
               justifyContent: 'center',
+              height: '42px',
+              minHeight: '42px',
+              fontSize: '0.95rem',
             }}
           >
             Sign Out
           </ArcadeButton>
           <ArcadeButton
             variant="secondary"
+            fullWidth
             size="sm"
             onClick={onClose}
             style={{
-              minWidth: '95px',
-              height: '38px',
-              padding: '8px 16px',
-              display: 'inline-flex',
-              alignItems: 'center',
               justifyContent: 'center',
+              height: '42px',
+              minHeight: '42px',
+              fontSize: '0.95rem',
             }}
           >
-            Done
+            Continue
           </ArcadeButton>
         </div>
       }
