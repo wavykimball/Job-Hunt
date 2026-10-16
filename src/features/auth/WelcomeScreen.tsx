@@ -129,10 +129,11 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onSignIn, isLoadin
             <span
               style={{
                 display: 'block',
-                fontSize: '0.78rem',
-                color: 'var(--color-muted)',
-                fontWeight: 700,
-                marginTop: '6px',
+                fontSize: '0.85rem',
+                color: 'var(--color-navy)',
+                fontWeight: 800,
+                marginTop: '8px',
+                lineHeight: 1.35,
               }}
             >
               Play as a guest or sign in below to sync your progress.
@@ -193,12 +194,13 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onSignIn, isLoadin
             marginTop: '22px',
             paddingTop: '16px',
             borderTop: '1px solid var(--color-muted)',
-            fontSize: '0.78rem',
-            color: 'var(--color-teal)',
+            fontSize: '0.84rem',
+            color: 'var(--color-navy)',
+            fontWeight: 700,
             lineHeight: 1.4,
           }}
         >
-          <strong>Save Progress:</strong> Log in with start.ng to keep your earnings, character, and leaderboard rank.
+          <strong style={{ color: 'var(--color-coral)' }}>Save Progress:</strong> Log in with start.ng to keep your earnings, character, and leaderboard rank.
         </div>
       </ArcadeCard>
     </div>
