@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Modal } from '@/components/Modal';
 import { ArcadeButton } from '@/components/ArcadeButton';
 import { Player, Employment, Application } from '@/types/game';
-import { LogOut, Palette, Check } from 'lucide-react';
+import { Palette, Check } from 'lucide-react';
 
 interface ProfileModalProps {
   isOpen: boolean;
@@ -51,14 +51,38 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
       title="Player Profile & Career"
       headerVariant="teal"
       footer={
-        <>
-          <ArcadeButton variant="danger" size="sm" onClick={onSignOut}>
-            <LogOut size={16} /> Sign Out
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '10px' }}>
+          <ArcadeButton
+            variant="danger"
+            size="sm"
+            onClick={onSignOut}
+            style={{
+              minWidth: '95px',
+              height: '38px',
+              padding: '8px 16px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            Sign Out
           </ArcadeButton>
-          <ArcadeButton variant="primary" size="sm" onClick={onClose}>
+          <ArcadeButton
+            variant="secondary"
+            size="sm"
+            onClick={onClose}
+            style={{
+              minWidth: '95px',
+              height: '38px',
+              padding: '8px 16px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
             Done
           </ArcadeButton>
-        </>
+        </div>
       }
     >
       <div>
