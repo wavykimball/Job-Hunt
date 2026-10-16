@@ -1,0 +1,95 @@
+import { AuthChangeListener, AuthState, AuthUser, IAuthAdapter } from './AuthAdapter';
+
+const DEV_AUTH_STORAGE_KEY = 'jobhunt_dev_auth_user';
+
+export const DEV_PERSONAS: Array<{ id: string; name: string; rolePrompt: string }> = [
+  { id: 'dev-rookie-1', name: 'Rookie Devin', rolePrompt: 'Ready to apply everywhere' },
+  { id: 'dev-pro-2', name: 'Jordan Hustle', rolePrompt: 'Eager to score coins' },
+  { id: 'dev-mvp-3', name: 'Taylor Swift-Shot', rolePrompt: 'Hoops champion' },
+];
+
+export class MockAuthAdapter implements IAuthAdapter {
+  private currentUser: AuthUser | null = null;
+  private listeners: Set<AuthChangeListener> = new Set();
+
+  constructor() {
+    // Fail fast if running in strict production mode with mock requested accidentally
+    if (import.meta.env.PROD && import.meta.env.VITE_ALLOW_MOCK_AUTH !== 'true') {
+      throw new Error(
+        'Configuration Error: MockAuthAdapter cannot be silently enabled in production. Configure Supabase Auth or explicit platform auth adapter.'
+      );
+    }
+
+    // Restore saved development user from localStorage if present
+    try {
+      const stored = localStorage.getItem(DEV_AUTH_STORAGE_KEY);
+      if (stored) {
+        this.currentUser = JSON.parse(stored);
+      }
+    } catch {
+      // ignore
+    }
+  }
+
+  isAvailable(): boolean {
+    return true;
+  }
+
+  async getCurrentUser(): Promise<AuthUser | null> {
+    return this.currentUser;
+  }
+
+  async signIn(displayName?: string, email?: string): Promise<AuthUser> {
+    const chosenName = (displayName || '').trim() || DEV_PERSONAS[0].name;
+    const stableId = `mock-user-${chosenName.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
+
+    const user: AuthUser = {
+      id: stableId,
+      displayName: chosenName,
+      email: email || `${chosenName.toLowerCase().replace(/\s+/g, '.')}@example.test`,
+      isMock: true,
+    };
+
+    this.currentUser = user;
+    try {
+      localStorage.setItem(DEV_AUTH_STORAGE_KEY, JSON.stringify(user));
+    } catch {
+      // ignore
+    }
+
+    this.notify();
+    return user;
+  }
+
+  async signOut(): Promise<void> {
+    this.currentUser = null;
+    try {
+      localStorage.removeItem(DEV_AUTH_STORAGE_KEY);
+    } catch {
+      // ignore
+    }
+    this.notify();
+  }
+
+  onAuthStateChange(listener: AuthChangeListener): () => void {
+    this.listeners.add(listener);
+    listener({
+      user: this.currentUser,
+      isLoading: false,
+      error: null,
+    });
+
+    return () => {
+      this.listeners.delete(listener);
+    };
+  }
+
+  private notify() {
+    const state: AuthState = {
+      user: this.currentUser,
+      isLoading: false,
+      error: null,
+    };
+    this.listeners.forEach((l) => l(state));
+  }
+}

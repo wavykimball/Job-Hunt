@@ -1,0 +1,56 @@
+/* Job Hunt — Design Tokens (from STYLES.md) */
+:root {
+  /* Color Palette */
+  --color-sunshine: #FFE85A;
+  --color-golden-yellow: #FFC629;
+  --color-orange: #FF9F0A;
+  --color-coral: #F23855;
+  --color-coral-dark: #C92C47;
+  --color-cyan: #08BFE8;
+  --color-cyan-dark: #087F9B;
+  --color-green: #39CF61;
+  --color-green-dark: #22964A;
+  --color-teal: #2E7185;
+  --color-teal-dark: #174D5C;
+  --color-navy: #193A46;
+  --color-ink: #102F3A;
+  --color-paper: #FFFFFF;
+  --color-cloud: #F4F7F7;
+  --color-muted: #D9E4E5;
+  --color-success: #22964A;
+  --color-warning: #E78A00;
+  --color-danger: #C92C47;
+
+  /* Shape / Corner Radii */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+
+  /* Spacing Scale (4px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* Elevation */
+  --shadow-card: 0 5px 0 rgba(16, 47, 58, 0.14);
+  --shadow-card-hover: 0 7px 0 rgba(16, 47, 58, 0.18);
+  --shadow-modal: 0 18px 48px rgba(10, 35, 44, 0.28);
+  --shadow-hud: 0 4px 12px rgba(16, 47, 58, 0.2);
+
+  /* Motion */
+  --motion-fast: 120ms;
+  --motion-standard: 200ms;
+  --motion-slow: 320ms;
+
+  /* Fonts */
+  --font-display: 'Nunito', 'Baloo 2', system-ui, -apple-system, sans-serif;
+  --font-body: 'Nunito', system-ui, -apple-system, sans-serif;
+}
