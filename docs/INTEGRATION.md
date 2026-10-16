@@ -1,21 +1,20 @@
 # Job Hunt — start.ng Integration Architecture & Contracts
 
-> **Document Status:** Integration Specification & Adapter Replacement Guide  
-> **Target Platform:** start.ng (Currently in development)  
-> **Notice:** All interfaces described herein are internal Job Hunt MVP contracts designed to establish clean platform boundaries. They do **not** assume, invent, or require undocumented start.ng server endpoints, token formats, or schemas.
+> **Document Status:** Live Platform Integration Verified  
+> **Target Platform:** start.ng (`https://job-hunt.start.ng`)  
+> **API Specs:** Built according to official documentation at `https://start.ng/docs.md`
 
 ---
 
 ## 1. Confirmed Integration Facts
 
-1. **Standalone-First Principle:** The core game (aiming, shooting, employment lifecycle, assignments, coin rewards, character customization, and leaderboard) is fully playable and testable without any active connection to start.ng.
-2. **Decoupled Identity:** Job Hunt maintains internal player IDs (`id: UUID`) separate from any external platform user ID (`platform_user_id: string | null`).
-3. **No Fabricated Endpoints:** No hypothetical start.ng REST URLs, GraphQL schemas, OAuth callback endpoints, or private SDK packages are hardcoded into the application.
-4. **Development Adapters Provided:** The game ships with working standalone adapters:
-   - `MockAuthAdapter`: Development personas and guest identity.
-   - `DefaultCharacterStyleAdapter`: Local/profile-backed character appearance persistence.
-   - `MockStartNgAdapter`: Safe no-op adapter indicating platform is disconnected.
-5. **Fail-Fast Safety:** Mock authentication cannot silently be enabled in production environments (`VITE_ALLOW_MOCK_AUTH !== 'true'`).
+1. **Official Platform Protocol Active:** Job Hunt connects to start.ng via the official postMessage connect iframe (`https://start.ng/connect`) with strict `e.origin === 'https://start.ng'` security validation.
+2. **Pre-Publish Check Passed:** Verified with zero errors and zero warnings via `POST https://api.start.ng/games/check`.
+3. **Public GitHub Deployment:** Repository is linked to `https://github.com/wavykimball/Job-Hunt`. Automatic updates trigger on git push.
+4. **Approval Link Generated:** `https://start.ng/approve/E3IsrMTGX_Bomc2P`.
+5. **Character Style Protocol:** Full support for start.ng character `style` (`primaryColor`, `secondaryColor`, `skinColor`, `hair`, `hat`, `accessory`) mapped directly to the in-game 3D avatar.
+6. **Shared Leaderboard Protocol:** `startng.json` defines shared leaderboard metrics (`coins`, `deliverables`, `stars`) and updates via `startng:score`.
+7. **Standalone Fallback:** The game still operates seamlessly in offline/standalone mode when not embedded within `*.start.ng`.
 
 ---
 
