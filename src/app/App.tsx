@@ -428,6 +428,7 @@ export const App: React.FC = () => {
         isOpen={isLeaderboardModalOpen}
         onClose={() => setIsLeaderboardModalOpen(false)}
         currentPlayerId={player.id}
+        isGuest={Boolean(!startNgPlayer || !('account' in startNgPlayer))}
       />
 
       {/* Profile & Settings Modal */}

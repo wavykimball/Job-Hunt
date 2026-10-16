@@ -151,11 +151,32 @@ export class StartNgAdapter implements IStartNgAdapter {
   }
 
   async getLeaderboard(limit = 10): Promise<StartNgLeaderboardEntry[]> {
-    const reply = await askStartNg<{ type: string; ok: boolean; entries?: StartNgLeaderboardEntry[] }>(
-      { type: 'startng:leaderboard', limit },
-      'startng:leaderboardData'
-    );
-    return reply?.entries || [];
+    try {
+      const reply = await askStartNg<{ type: string; ok: boolean; entries?: StartNgLeaderboardEntry[] }>(
+        { type: 'startng:leaderboard', limit },
+        'startng:leaderboardData',
+        2000
+      );
+      if (reply?.entries && reply.entries.length > 0) {
+        return reply.entries;
+      }
+    } catch {
+      // ignore
+    }
+
+    // Direct HTTP API fallback (works for everyone including guests)
+    try {
+      const res = await fetch(`https://api.start.ng/games/job-hunt/leaderboard?limit=${limit}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          return data;
+        }
+      }
+    } catch {
+      // ignore
+    }
+    return [];
   }
 
   redirectToSignIn(): void {
