@@ -48,21 +48,21 @@ export const JobOfferModal: React.FC<JobOfferModalProps> = ({
             variant="secondary"
             fullWidth
             size="sm"
-            style={{ justifyContent: 'center', height: '42px', minHeight: '42px' }}
+            style={{ justifyContent: 'center', height: '42px', minHeight: '42px', fontSize: '0.95rem' }}
             onClick={() => onDecline(offeredCompany)}
             disabled={isAccepting}
           >
-            Decline / Keep Looking
+            Decline
           </ArcadeButton>
           <ArcadeButton
-            variant="success"
+            variant="primary"
             fullWidth
             size="sm"
-            style={{ justifyContent: 'center', height: '42px', minHeight: '42px' }}
+            style={{ justifyContent: 'center', height: '42px', minHeight: '42px', fontSize: '0.95rem' }}
             onClick={handleAccept}
             disabled={isAccepting}
           >
-            {isAccepting ? 'Accepting...' : 'Accept Job Offer'}
+            {isAccepting ? 'Accepting...' : 'Accept Offer'}
           </ArcadeButton>
         </div>
       }

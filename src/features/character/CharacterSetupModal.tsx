@@ -3,7 +3,7 @@ import { Modal } from '@/components/Modal';
 import { ArcadeButton } from '@/components/ArcadeButton';
 import { COLOR_OPTIONS } from '@/integrations/character/CharacterAppearance';
 import { CharacterAppearance } from '@/types/game';
-import { Check, Sparkles } from 'lucide-react';
+import { Check } from 'lucide-react';
 
 interface CharacterSetupModalProps {
   isOpen: boolean;
@@ -39,15 +39,28 @@ export const CharacterSetupModal: React.FC<CharacterSetupModalProps> = ({
       title="Customize Character"
       headerVariant="teal"
       footer={
-        <>
-          <ArcadeButton variant="secondary" size="sm" onClick={onClose} disabled={isSaving}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', width: '100%' }}>
+          <ArcadeButton
+            variant="secondary"
+            fullWidth
+            size="sm"
+            onClick={onClose}
+            disabled={isSaving}
+            style={{ justifyContent: 'center', height: '42px', minHeight: '42px', fontSize: '0.95rem' }}
+          >
             Cancel
           </ArcadeButton>
-          <ArcadeButton variant="primary" size="sm" onClick={handleSave} disabled={isSaving}>
-            <Sparkles size={16} />
+          <ArcadeButton
+            variant="primary"
+            fullWidth
+            size="sm"
+            onClick={handleSave}
+            disabled={isSaving}
+            style={{ justifyContent: 'center', height: '42px', minHeight: '42px', fontSize: '0.95rem' }}
+          >
             {isSaving ? 'Saving...' : 'Save Appearance'}
           </ArcadeButton>
-        </>
+        </div>
       }
     >
       <div>

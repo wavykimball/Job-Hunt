@@ -3,7 +3,7 @@ import { Modal } from '@/components/Modal';
 import { ArcadeButton } from '@/components/ArcadeButton';
 import { gameStorage } from '@/services/gameStorage';
 import { getStartNgAdapter } from '@/integrations/startNg';
-import { Coins, RefreshCw } from 'lucide-react';
+import { Coins } from 'lucide-react';
 
 interface DisplayLeaderboardEntry {
   rank: number;
@@ -92,29 +92,30 @@ export const LeaderboardModal: React.FC<LeaderboardModalProps> = ({
       headerVariant="teal"
       footer={
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', width: '100%' }}>
-          <button
+          <ArcadeButton
+            variant="secondary"
+            fullWidth
+            size="sm"
             onClick={loadLeaderboard}
             disabled={isLoading}
-            className="arcade-btn arcade-btn-secondary arcade-btn-sm"
             style={{
               justifyContent: 'center',
               height: '42px',
               minHeight: '42px',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
+              fontSize: '0.95rem',
             }}
           >
-            <RefreshCw size={14} className={isLoading ? 'coin-icon-spin' : ''} /> Refresh
-          </button>
+            {isLoading ? 'Refreshing...' : 'Refresh'}
+          </ArcadeButton>
           <ArcadeButton
-            variant="secondary"
+            variant="primary"
             fullWidth
             size="sm"
             style={{
               justifyContent: 'center',
               height: '42px',
               minHeight: '42px',
+              fontSize: '0.95rem',
             }}
             onClick={onClose}
           >

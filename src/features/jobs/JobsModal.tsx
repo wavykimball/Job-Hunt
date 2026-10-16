@@ -35,19 +35,26 @@ export const JobsModal: React.FC<JobsModalProps> = ({
       headerVariant="teal"
       maxWidth={540}
       footer={
-        <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
-          <ArcadeButton variant="secondary" size="sm" onClick={onClose}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', width: '100%' }}>
+          <ArcadeButton
+            variant="secondary"
+            fullWidth
+            size="sm"
+            onClick={onClose}
+            style={{ justifyContent: 'center', height: '42px', minHeight: '42px', fontSize: '0.95rem' }}
+          >
             Close
           </ArcadeButton>
           <ArcadeButton
             variant="primary"
+            fullWidth
             size="sm"
             onClick={() => {
               onClose();
               onStartApplying();
             }}
+            style={{ justifyContent: 'center', height: '42px', minHeight: '42px', fontSize: '0.95rem' }}
           >
-            <Briefcase size={16} />
             {applications.length === 0 ? 'Start Applying' : 'Apply to More Jobs'}
           </ArcadeButton>
         </div>
