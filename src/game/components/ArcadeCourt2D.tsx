@@ -43,8 +43,6 @@ export const ArcadeCourt2D: React.FC<ArcadeCourt2DProps> = ({
   onShotRelease,
   onShotComplete,
   onSelectCompany,
-  onSwitchTo3D,
-  webGLUnavailableMessage,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animFrameRef = useRef<number>(0);
@@ -839,46 +837,6 @@ export const ArcadeCourt2D: React.FC<ArcadeCourt2DProps> = ({
         }}
       />
 
-      {/* Subtle notice if WebGL was unavailable and fallback was triggered */}
-      {webGLUnavailableMessage && onSwitchTo3D && (
-        <div
-          style={{
-            position: 'absolute',
-            top: 56,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            background: 'rgba(25, 58, 70, 0.90)',
-            color: '#FFFFFF',
-            padding: '4px 12px',
-            borderRadius: 'var(--radius-pill)',
-            fontSize: '0.75rem',
-            fontWeight: 700,
-            zIndex: 30,
-            border: '1px solid rgba(255, 198, 41, 0.4)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 8,
-          }}
-        >
-          <span>2D Arcade Court Active</span>
-          <button
-            type="button"
-            onClick={onSwitchTo3D}
-            style={{
-              background: 'var(--color-golden-yellow)',
-              border: 'none',
-              borderRadius: 'var(--radius-pill)',
-              padding: '2px 8px',
-              fontSize: '0.72rem',
-              fontWeight: 800,
-              cursor: 'pointer',
-              color: 'var(--color-navy)',
-            }}
-          >
-            Retry 3D
-          </button>
-        </div>
-      )}
 
       {/* Power HUD meter when aiming */}
       {isAiming && (

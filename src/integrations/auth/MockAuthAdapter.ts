@@ -13,11 +13,24 @@ export class MockAuthAdapter implements IAuthAdapter {
   private listeners: Set<AuthChangeListener> = new Set();
 
   constructor() {
-    // Restore saved development user from localStorage if present
+    // Restore saved development user from localStorage or URL query param (?guest=1)
     try {
-      const stored = localStorage.getItem(DEV_AUTH_STORAGE_KEY);
-      if (stored) {
-        this.currentUser = JSON.parse(stored);
+      const params = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+      const guestParam = params?.get('guest');
+      if (guestParam) {
+        const guestName = guestParam === '1' ? 'Jordan Rookie' : guestParam;
+        const stableId = `mock-user-${guestName.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
+        this.currentUser = {
+          id: stableId,
+          displayName: guestName,
+          email: `${guestName.toLowerCase().replace(/\s+/g, '.')}@example.test`,
+          isMock: true,
+        };
+      } else {
+        const stored = localStorage.getItem(DEV_AUTH_STORAGE_KEY);
+        if (stored) {
+          this.currentUser = JSON.parse(stored);
+        }
       }
     } catch {
       // ignore
