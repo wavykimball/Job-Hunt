@@ -59,8 +59,7 @@ export const App: React.FC = () => {
   const [isJobsModalOpen, setIsJobsModalOpen] = useState(false);
   const [pendingJobOffer, setPendingJobOffer] = useState<Company | null>(null);
 
-  // 1a. Listen for start.ng platform user and presence (Runs cleanly once without looping)
-  const startNgStyleSyncedRef = useRef(false);
+  // 1a. Listen for start.ng platform user and presence (Runs on mount, tab focus, or visibility change)
   useEffect(() => {
     const checkStartNg = async () => {
       try {
@@ -68,19 +67,9 @@ export const App: React.FC = () => {
         if (p) {
           setStartNgPlayer(p);
           // If no local session exists, sign in using start.ng user/guest name
-          if (!authAdapter.getCurrentUser()) {
+          const currentAuth = await authAdapter.getCurrentUser();
+          if (!currentAuth && p.name) {
             await authAdapter.signIn(p.name);
-          }
-          // If style exists, sync it quietly once on initial connect
-          if (p.style && !startNgStyleSyncedRef.current) {
-            startNgStyleSyncedRef.current = true;
-            const mapped = startNgAdapter.mapPlatformStyleToCharacter(p.style);
-            const normalized = normalizeCharacterAppearance(mapped);
-            setPlayer((prev) => {
-              if (!prev) return prev;
-              gameStorage.savePlayerAppearance(prev.id, normalized).catch(() => {});
-              return { ...prev, character_config: normalized };
-            });
           }
         }
       } catch {
@@ -97,13 +86,39 @@ export const App: React.FC = () => {
     };
   }, [authAdapter, startNgAdapter]);
 
-  // 1b. Listen for Auth State Changes
+  // 1b. Automatically sync start.ng platform character style whenever available
+  useEffect(() => {
+    if (startNgPlayer?.style && player) {
+      const mapped = startNgAdapter.mapPlatformStyleToCharacter(startNgPlayer.style);
+      const normalized = normalizeCharacterAppearance(mapped);
+      const current = player.character_config;
+
+      const isDifferent =
+        current.shirtColor !== normalized.shirtColor ||
+        current.trouserColor !== normalized.trouserColor ||
+        current.skinColor !== normalized.skinColor ||
+        current.accessoryId !== normalized.accessoryId;
+
+      if (isDifferent) {
+        gameStorage.savePlayerAppearance(player.id, normalized).catch(() => {});
+        setPlayer((prev) => (prev ? { ...prev, character_config: normalized } : prev));
+      }
+    }
+  }, [startNgPlayer, player]);
+
+  // 1c. Listen for Auth State Changes
   useEffect(() => {
     const unsubscribe = authAdapter.onAuthStateChange(async (state) => {
       setAuthUser(state.user);
       if (state.user) {
         try {
           const loadedPlayer = await gameStorage.getOrCreatePlayer(state.user.id, state.user.displayName);
+          if (startNgPlayer?.style) {
+            const mapped = startNgAdapter.mapPlatformStyleToCharacter(startNgPlayer.style);
+            const normalized = normalizeCharacterAppearance(mapped);
+            loadedPlayer.character_config = normalized;
+            await gameStorage.savePlayerAppearance(loadedPlayer.id, normalized).catch(() => {});
+          }
           setPlayer(loadedPlayer);
 
           // Load employment & applications

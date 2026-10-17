@@ -121,17 +121,28 @@ export class StartNgAdapter implements IStartNgAdapter {
     if (!style) return { ...DEFAULT_CHARACTER_APPEARANCE };
 
     let accessoryId: string | null = null;
-    if (style.hat && style.hat !== 'none') {
-      accessoryId = style.hat === 'cap' ? 'cap' : 'headband';
-    } else if (style.accessory && style.accessory !== 'none') {
-      accessoryId = style.accessory === 'glasses' ? 'glasses' : 'headband';
+    const hat = (style.hat || '').toLowerCase();
+    const acc = (style.accessory || '').toLowerCase();
+
+    if (hat === 'cap' || hat === 'beanie' || hat === 'tophat') {
+      accessoryId = 'cap';
+    } else if (hat === 'crown' || acc === 'headband') {
+      accessoryId = 'headband';
+    } else if (acc === 'glasses' || acc === 'earrings') {
+      accessoryId = 'glasses';
     }
 
     return {
       modelId: DEFAULT_CHARACTER_APPEARANCE.modelId,
-      shirtColor: style.primaryColor && style.primaryColor.startsWith('#') ? style.primaryColor : DEFAULT_CHARACTER_APPEARANCE.shirtColor,
-      trouserColor: style.secondaryColor && style.secondaryColor.startsWith('#') ? style.secondaryColor : DEFAULT_CHARACTER_APPEARANCE.trouserColor,
-      skinColor: style.skinColor && style.skinColor.startsWith('#') ? style.skinColor : DEFAULT_CHARACTER_APPEARANCE.skinColor,
+      shirtColor: style.primaryColor && (style.primaryColor.startsWith('#') || style.primaryColor.startsWith('rgb'))
+        ? style.primaryColor
+        : DEFAULT_CHARACTER_APPEARANCE.shirtColor,
+      trouserColor: style.secondaryColor && (style.secondaryColor.startsWith('#') || style.secondaryColor.startsWith('rgb'))
+        ? style.secondaryColor
+        : DEFAULT_CHARACTER_APPEARANCE.trouserColor,
+      skinColor: style.skinColor && (style.skinColor.startsWith('#') || style.skinColor.startsWith('rgb'))
+        ? style.skinColor
+        : DEFAULT_CHARACTER_APPEARANCE.skinColor,
       shoesColor: DEFAULT_CHARACTER_APPEARANCE.shoesColor,
       accessoryId,
     };
