@@ -7,7 +7,7 @@ import {
   LeaderboardEntry,
   Player,
 } from '@/types/game';
-import { DEFAULT_CHARACTER_APPEARANCE } from '@/integrations/character/CharacterAppearance';
+import { DEFAULT_CHARACTER_APPEARANCE, normalizeCharacterAppearance } from '@/integrations/character/CharacterAppearance';
 import { INITIAL_ASSIGNMENT_TEMPLATES } from './seedData';
 import { supabase, isSupabaseConfigured } from './supabaseClient';
 
@@ -61,7 +61,10 @@ export class GameStorageService {
       const rawPlayers = localStorage.getItem(STORAGE_KEYS.PLAYERS);
       if (rawPlayers) {
         const list: Player[] = JSON.parse(rawPlayers);
-        list.forEach((p) => this.memoryCache.players.set(p.id, p));
+        list.forEach((p) => {
+          p.character_config = normalizeCharacterAppearance(p.character_config);
+          this.memoryCache.players.set(p.id, p);
+        });
       }
 
       const rawApps = localStorage.getItem(STORAGE_KEYS.APPLICATIONS);

@@ -67,6 +67,11 @@ export const HUD: React.FC<HUDProps> = ({
         )}
       </div>
 
+      {/* Center Game Title (Top of homepage) */}
+      <div className="hud-center-title" title="Job Hunt Arcade">
+        <span className="hud-title-text">JOB HUNT</span>
+      </div>
+
       {/* Action Buttons */}
       <div className="hud-actions">
 

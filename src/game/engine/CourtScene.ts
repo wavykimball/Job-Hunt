@@ -353,7 +353,7 @@ export class CourtScene {
       this.hoopTargetRing.visible = visible;
     }
     if (this.titleBillboard) {
-      this.titleBillboard.visible = !visible;
+      this.titleBillboard.visible = false;
     }
   }
 

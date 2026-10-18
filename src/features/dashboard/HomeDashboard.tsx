@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { ArcadeButton } from '@/components/ArcadeButton';
-import { ArcadeCard } from '@/components/ArcadeCard';
 import { Modal } from '@/components/Modal';
 import { Employment, Company } from '@/types/game';
-import { Briefcase, Play, Pause, LogOut, Building2, Palette } from 'lucide-react';
+import { Briefcase, Play, Pause, LogOut, Building2 } from 'lucide-react';
 
 interface HomeDashboardProps {
   playerName: string;
@@ -28,7 +27,6 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
   onPauseEmployment,
   onResumeEmployment,
   onQuitEmployment,
-  onOpenCharacterSetup,
 }) => {
   const [showQuitConfirm, setShowQuitConfirm] = useState(false);
   const [isProcessingAction, setIsProcessingAction] = useState(false);
@@ -51,199 +49,145 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
 
   return (
     <div className="dashboard-screen-overlay">
-      {/* 1. Floating Employment Status Pill directly above character's head (both desktop and mobile) */}
-      <div className="character-head-status-pill">
+      {/* 1. Speech Bubble Callout floating cleanly above character's head (Unobstructed character in center) */}
+      <div className="character-speech-bubble">
         {isUnemployed && (
-          <span className="status-pill status-pill-unemployed">Unemployed</span>
+          <>
+            <span className="speech-bubble-tag" style={{ color: 'var(--color-coral)' }}>
+              🏀 Unemployed Career Seeker
+            </span>
+            <div className="speech-bubble-text">
+              Shoot your CV into company hoops to land a job!
+            </div>
+          </>
         )}
         {isEmployed && (
-          <span className="status-pill status-pill-employed">
-            Employed • {employedCompany?.name}
-          </span>
+          <>
+            <span className="speech-bubble-tag" style={{ color: 'var(--color-teal)' }}>
+              ★ Employed • {employedCompany?.name}
+            </span>
+            <div className="speech-bubble-text">
+              Deliver assigned work into the hoop to earn coins!
+            </div>
+          </>
         )}
         {isPaused && (
-          <span className="status-pill status-pill-paused">
-            On a Break • {employedCompany?.name}
-          </span>
+          <>
+            <span className="speech-bubble-tag" style={{ color: 'var(--color-golden-yellow)' }}>
+              ❚❚ Taking a Career Break
+            </span>
+            <div className="speech-bubble-text">
+              You retain your role at {employedCompany?.name}. Resume anytime!
+            </div>
+          </>
         )}
       </div>
 
-      {/* 2. White Career Greeting Banner: moves to top-left on mobile; sits above deck on desktop */}
-      <div className="career-greeting-banner">
-        <span className="greeting-subtitle">Career Dashboard</span>
-        <div className="greeting-title-row">
-          <h2 className="greeting-title">Welcome, {playerName}!</h2>
-          <button
-            onClick={onOpenCharacterSetup}
-            className="arcade-btn arcade-btn-golden arcade-btn-sm arcade-btn-icon greeting-palette-btn"
-            title="Customize character appearance"
-            aria-label="Customize character appearance"
-          >
-            <Palette size={14} />
-          </button>
+      {/* 2. Left Side Rail: Action button(s) cleanly docked on the left */}
+      <div className="dashboard-left-rail">
+        {/* Welcome & Persona Badge (Character customization button removed per instruction) */}
+        <div className="rail-greeting-badge">
+          <span className="rail-greeting-sub">3D Basketball Career Arcade</span>
+          <div className="rail-greeting-row">
+            <span className="rail-greeting-name">Welcome, {playerName}!</span>
+          </div>
         </div>
-      </div>
 
-      {/* 3. Centered Arcade Dashboard Deck */}
-      <div className="dashboard-deck-container">
-        <ArcadeCard className="dashboard-deck-card">
-          {/* Active Employment Card Info (if employed or paused) */}
-          {(isEmployed || isPaused) && employedCompany && (
-            <div
-              style={{
-                background: 'var(--color-cloud)',
-                border: '2px solid var(--color-muted)',
-                borderRadius: 'var(--radius-md)',
-                padding: '12px 14px',
-                marginBottom: '12px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div
-                  style={{
-                    width: 38,
-                    height: 38,
-                    borderRadius: 'var(--radius-md)',
-                    background: employedCompany.accent_color,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#FFF',
-                    flexShrink: 0,
-                  }}
-                >
-                  <Building2 size={20} />
-                </div>
-                <div>
-                  <div style={{ fontWeight: 800, fontSize: '0.98rem', color: 'var(--color-ink)' }}>
-                    {employedCompany.name}
-                  </div>
-                  <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-teal)' }}>
-                    Role: {currentEmployment?.role_title}
-                  </div>
-                </div>
+        {/* --- UNEMPLOYED ACTION STACK --- */}
+        {isUnemployed && (
+          /* Primary Apply to Jobs button (no description, no "Ready" pill) */
+          <div
+            className="arcade-action-card card-coral"
+            onClick={onStartJobHunting}
+            role="button"
+            tabIndex={0}
+          >
+            <div className="arcade-card-icon-bubble">
+              <Briefcase size={22} />
+            </div>
+            <div className="arcade-card-info">
+              <div className="arcade-card-title">Apply to Jobs</div>
+            </div>
+          </div>
+        )}
+
+        {/* --- EMPLOYED / ON BREAK ACTION STACK --- */}
+        {(isEmployed || isPaused) && employedCompany && (
+          <>
+            {/* 1. Company Name (First) */}
+            <div className="arcade-action-card card-teal" style={{ cursor: 'default' }}>
+              <div
+                className="arcade-card-icon-bubble"
+                style={{ background: employedCompany.accent_color, border: '2px solid rgba(255,255,255,0.6)' }}
+              >
+                <Building2 size={20} />
               </div>
-
-              {/* Pause / Resume action */}
-              <div style={{ display: 'flex', gap: '6px' }}>
-                {isEmployed && (
-                  <button
-                    onClick={onPauseEmployment}
-                    className="arcade-btn arcade-btn-secondary arcade-btn-sm"
-                    title="Take a break from work"
-                  >
-                    <Pause size={13} /> Break
-                  </button>
-                )}
-                {isPaused && (
-                  <button
-                    onClick={onResumeEmployment}
-                    className="arcade-btn arcade-btn-golden arcade-btn-sm"
-                    title="Resume working"
-                  >
-                    <Play size={13} /> Resume
-                  </button>
-                )}
-                <button
-                  onClick={() => setShowQuitConfirm(true)}
-                  className="arcade-btn arcade-btn-danger arcade-btn-sm arcade-btn-icon"
-                  title="Quit current job"
-                  aria-label="Quit current job"
-                >
-                  <LogOut size={15} />
-                </button>
+              <div className="arcade-card-info">
+                <div className="arcade-card-title">{employedCompany.name}</div>
+                <div className="arcade-card-sub">
+                  {isPaused ? 'Status: On a Break' : currentEmployment?.role_title}
+                </div>
               </div>
             </div>
-          )}
 
-          {/* Primary & Secondary Call to Actions based on user state */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            {isUnemployed && (
-              <ArcadeButton
-                variant="primary"
-                fullWidth
-                onClick={onStartJobHunting}
-                style={{ fontSize: '1.15rem', padding: '16px 20px' }}
-              >
-                <Briefcase size={22} />
-                Apply to Jobs
-              </ArcadeButton>
-            )}
+            {/* 2. Continue Working (Next button under) */}
+            <div
+              className="arcade-action-card card-coral"
+              onClick={isPaused ? onResumeEmployment : onStartWorking}
+              role="button"
+              tabIndex={0}
+            >
+              <div className="arcade-card-icon-bubble">
+                <Play size={20} />
+              </div>
+              <div className="arcade-card-info">
+                <div className="arcade-card-title">{isPaused ? 'Resume Work' : 'Continue Working'}</div>
+              </div>
+            </div>
 
-            {isEmployed && (
-              <>
-                <ArcadeButton
-                  variant="primary"
-                  fullWidth
-                  onClick={onStartWorking}
-                  style={{ fontSize: '1.15rem', padding: '16px 20px' }}
-                >
-                  <Play size={22} />
-                  Continue Working (Earn Coins)
-                </ArcadeButton>
+            {/* 3. Break (Comes after) */}
+            <div
+              className="arcade-action-card card-golden"
+              onClick={isPaused ? onResumeEmployment : onPauseEmployment}
+              role="button"
+              tabIndex={0}
+            >
+              <div className="arcade-card-icon-bubble" style={{ background: 'rgba(0,0,0,0.1)' }}>
+                {isPaused ? <Play size={20} color="#102F3A" /> : <Pause size={20} color="#102F3A" />}
+              </div>
+              <div className="arcade-card-info">
+                <div className="arcade-card-title" style={{ color: '#102F3A' }}>
+                  {isPaused ? 'Resume' : 'Break'}
+                </div>
+              </div>
+            </div>
 
-                <ArcadeButton
-                  variant="accent"
-                  fullWidth
-                  onClick={onStartJobHunting}
-                  size="sm"
-                >
-                  <Briefcase size={16} />
-                  Apply to Other Jobs
-                </ArcadeButton>
-              </>
-            )}
+            {/* 4. Quit (Comes last) */}
+            <div
+              className="arcade-action-card card-danger"
+              onClick={() => setShowQuitConfirm(true)}
+              role="button"
+              tabIndex={0}
+            >
+              <div className="arcade-card-icon-bubble" style={{ background: 'rgba(0,0,0,0.2)' }}>
+                <LogOut size={20} />
+              </div>
+              <div className="arcade-card-info">
+                <div className="arcade-card-title">Quit</div>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
 
-            {isPaused && (
-              <>
-                <ArcadeButton
-                  variant="golden"
-                  fullWidth
-                  onClick={onResumeEmployment}
-                  style={{ fontSize: '1.15rem', padding: '16px 20px' }}
-                >
-                  <Play size={22} />
-                  Resume Work
-                </ArcadeButton>
-
-                <ArcadeButton
-                  variant="accent"
-                  fullWidth
-                  onClick={onStartJobHunting}
-                  size="sm"
-                >
-                  <Briefcase size={16} />
-                  Apply to Other Jobs
-                </ArcadeButton>
-              </>
-            )}
-          </div>
-        </ArcadeCard>
-
-        {/* Quick hint card */}
-        <div className="dashboard-explainer-pill">
-          {isUnemployed && (
-            <>
-              <span className="explainer-text-desktop">🏀 Drag backwards on the court to aim your CV at company hoops!</span>
-              <span className="explainer-text-mobile">🏀 Drag backwards on court to aim CV at hoops!</span>
-            </>
-          )}
-          {isEmployed && (
-            <>
-              <span className="explainer-text-desktop">💼 Submit deliverables into the hoop to earn coins for each completed task!</span>
-              <span className="explainer-text-mobile">💼 Submit deliverables into hoop to earn coins!</span>
-            </>
-          )}
-          {isPaused && (
-            <>
-              <span className="explainer-text-desktop">❚❚ On break: You retain your job, but cannot earn coins until resuming work.</span>
-              <span className="explainer-text-mobile">❚❚ On break: Resume work to continue earning coins.</span>
-            </>
-          )}
-        </div>
+      {/* 3. Bottom-Left Informational Hint (Looks less like a button, placed at bottom-left) */}
+      <div className="dashboard-bottom-left-tip">
+        <span className="tip-icon">🏀</span>
+        <span className="tip-text">
+          {isUnemployed && 'Drag backwards on court & release to shoot CVs into company hoops'}
+          {isEmployed && 'Drag backwards on court & release to submit deliverables'}
+          {isPaused && 'On a break: Resume work anytime to submit deliverables'}
+        </span>
       </div>
 
       {/* Quit Job Confirmation Modal */}

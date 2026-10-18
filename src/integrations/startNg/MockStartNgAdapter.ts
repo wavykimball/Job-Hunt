@@ -27,6 +27,11 @@ export class MockStartNgAdapter implements IStartNgAdapter {
       skinColor: style.skinColor || DEFAULT_CHARACTER_APPEARANCE.skinColor,
       shoesColor: DEFAULT_CHARACTER_APPEARANCE.shoesColor,
       accessoryId: style.hat || style.accessory || null,
+      body: style.body || DEFAULT_CHARACTER_APPEARANCE.body,
+      hair: style.hair || DEFAULT_CHARACTER_APPEARANCE.hair,
+      hairColor: style.hairColor || DEFAULT_CHARACTER_APPEARANCE.hairColor,
+      hat: style.hat || DEFAULT_CHARACTER_APPEARANCE.hat,
+      accessory: style.accessory || DEFAULT_CHARACTER_APPEARANCE.accessory,
     };
   }
 

@@ -3,6 +3,7 @@ import { AuthChangeListener, AuthState, AuthUser, IAuthAdapter } from './AuthAda
 const DEV_AUTH_STORAGE_KEY = 'jobhunt_dev_auth_user';
 
 export const DEV_PERSONAS: Array<{ id: string; name: string; rolePrompt: string }> = [
+  { id: 'dev-raji-0', name: 'Raji', rolePrompt: 'Ready to ball on the court' },
   { id: 'dev-rookie-1', name: 'Rookie Devin', rolePrompt: 'Ready to apply everywhere' },
   { id: 'dev-pro-2', name: 'Jordan Hustle', rolePrompt: 'Eager to score coins' },
   { id: 'dev-mvp-3', name: 'Taylor Swift-Shot', rolePrompt: 'Hoops champion' },
@@ -18,7 +19,7 @@ export class MockAuthAdapter implements IAuthAdapter {
       const params = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
       const guestParam = params?.get('guest');
       if (guestParam) {
-        const guestName = guestParam === '1' ? 'Jordan Rookie' : guestParam;
+        const guestName = guestParam === '1' ? 'Raji' : guestParam;
         const stableId = `mock-user-${guestName.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
         this.currentUser = {
           id: stableId,
@@ -30,6 +31,14 @@ export class MockAuthAdapter implements IAuthAdapter {
         const stored = localStorage.getItem(DEV_AUTH_STORAGE_KEY);
         if (stored) {
           this.currentUser = JSON.parse(stored);
+        } else {
+          // Default development persona is Raji
+          this.currentUser = {
+            id: 'mock-user-raji',
+            displayName: 'Raji',
+            email: 'raji@example.test',
+            isMock: true,
+          };
         }
       }
     } catch {

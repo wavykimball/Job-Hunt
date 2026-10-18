@@ -151,10 +151,11 @@ export const JobHuntingMode: React.FC<JobHuntingModeProps> = ({
     <>
       {/* Top Left Back Navigation */}
       <div
+        className="jobhunt-top-nav"
         style={{
           position: 'absolute',
-          top: '56px',
-          left: '14px',
+          top: '74px',
+          left: '16px',
           zIndex: 60,
           pointerEvents: 'auto',
         }}

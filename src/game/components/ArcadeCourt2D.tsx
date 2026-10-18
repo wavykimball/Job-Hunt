@@ -252,59 +252,7 @@ export const ArcadeCourt2D: React.FC<ArcadeCourt2DProps> = ({
       ctx.ellipse(charX, charY + 20, isMobile ? 55 : 75, isMobile ? 18 : 24, 0, 0, Math.PI * 2);
       ctx.stroke();
 
-      if (!showHoops) {
-        // 4. LARGE "JOB HUNT" TEXT IN THE MIDDLE (Homepage View)
-        ctx.save();
-        const wallCenterY = (wallTop + wallBottom) * 0.5;
-        const titleY = wallCenterY - (isMobile ? 12 : 16);
-        const titleSize = isMobile ? Math.min(50, Math.max(32, w * 0.12)) : Math.min(92, Math.max(58, w * 0.08));
-
-        ctx.font = `900 ${titleSize}px Nunito, "Arial Black", sans-serif`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-
-        // 3D Shadow Layers
-        const shadowDepth = isMobile ? 6 : 9;
-        for (let s = shadowDepth; s >= 1; s--) {
-          ctx.fillStyle = '#0A1D24';
-          ctx.fillText('JOB HUNT', w * 0.5, titleY + s);
-        }
-
-        // Bold Outer Border
-        ctx.strokeStyle = '#0A1D24';
-        ctx.lineWidth = isMobile ? 8 : 14;
-        ctx.lineJoin = 'round';
-        ctx.strokeText('JOB HUNT', w * 0.5, titleY);
-
-        // Golden Sunrise Gradient
-        const textGrad = ctx.createLinearGradient(0, titleY - titleSize * 0.5, 0, titleY + titleSize * 0.5);
-        textGrad.addColorStop(0, '#FFF59D');
-        textGrad.addColorStop(0.45, '#FFC629');
-        textGrad.addColorStop(1, '#FF7A00');
-        ctx.fillStyle = textGrad;
-        ctx.fillText('JOB HUNT', w * 0.5, titleY);
-
-        // Subtle Top Highlight
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
-        ctx.fillText('JOB HUNT', w * 0.5, titleY - 2);
-
-        // Subtitle badge in accessible high-contrast golden yellow with dark shadow
-        const subSize = isMobile ? 12 : 16;
-        const subY = titleY + titleSize * 0.62;
-        ctx.font = `800 ${subSize}px Nunito, sans-serif`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-
-        // High contrast shadow
-        ctx.fillStyle = '#0A1D24';
-        ctx.fillText('★ 3D BASKETBALL CAREER ARCADE ★', w * 0.5, subY + 2);
-
-        // Accessible bright golden yellow text (WCAG AAA)
-        ctx.fillStyle = '#FFE85A';
-        ctx.fillText('★ 3D BASKETBALL CAREER ARCADE ★', w * 0.5, subY);
-
-        ctx.restore();
-      } else {
+      if (showHoops) {
         // 4. Render All 4 Hoops (Posts, Backboard, Rim, and Visible Net)
         hoops.forEach((hp) => {
           const { company, x, y, isSelected } = hp;
@@ -574,12 +522,50 @@ export const ArcadeCourt2D: React.FC<ArcadeCourt2DProps> = ({
       ctx.roundRect ? ctx.roundRect(-28, cY - 82 + breath, 56, 52, 8) : ctx.rect(-28, cY - 82 + breath, 56, 52);
       ctx.fill();
 
-      // Head & Face
+      // Head position
       const headY = cY - 126 + breath;
+
+      // Hair behind/around head (for afro, braids, bun)
+      const hairColor = config.hairColor || '#17120f';
+      const hairStyle = config.hair || 'afro';
+
+      if (hairStyle === 'afro') {
+        ctx.fillStyle = hairColor;
+        ctx.beginPath();
+        // Authentic fluffy Afro silhouette matching start.ng
+        ctx.arc(0, headY + 12, 34, 0, Math.PI * 2);
+        ctx.arc(-16, headY - 4, 20, 0, Math.PI * 2);
+        ctx.arc(16, headY - 4, 20, 0, Math.PI * 2);
+        ctx.arc(0, headY - 14, 22, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (hairStyle === 'bun') {
+        ctx.fillStyle = hairColor;
+        ctx.beginPath();
+        ctx.arc(0, headY - 12, 14, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Head & Face
       ctx.fillStyle = config.skinColor;
       ctx.beginPath();
       ctx.roundRect ? ctx.roundRect(-22, headY, 44, 44, 10) : ctx.rect(-22, headY, 44, 44);
       ctx.fill();
+
+      // Top hair dome for short/braids/bun
+      if (hairStyle === 'short' || hairStyle === 'braids' || hairStyle === 'dreads') {
+        ctx.fillStyle = hairColor;
+        ctx.beginPath();
+        ctx.arc(0, headY + 6, 24, Math.PI, 0);
+        ctx.fill();
+      }
+
+      // Beard accessory
+      if (config.accessory === 'beard') {
+        ctx.fillStyle = hairColor;
+        ctx.beginPath();
+        ctx.roundRect ? ctx.roundRect(-20, headY + 28, 40, 18, 6) : ctx.rect(-20, headY + 28, 40, 18);
+        ctx.fill();
+      }
 
       // Eyes
       ctx.fillStyle = '#102F3A';
@@ -597,15 +583,40 @@ export const ArcadeCourt2D: React.FC<ArcadeCourt2DProps> = ({
       }
       ctx.stroke();
 
-      // Accessory
-      if (config.accessoryId === 'headband') {
-        ctx.fillStyle = '#FFE85A';
-        ctx.fillRect(-24, headY + 8, 48, 8);
-      } else if (config.accessoryId === 'cap') {
-        ctx.fillStyle = '#08BFE8';
+      // Hats & Accessories
+      const hatStyle = config.hat || 'none';
+      if (hatStyle === 'cap' || config.accessoryId === 'cap') {
+        ctx.fillStyle = config.shirtColor;
         ctx.fillRect(-24, headY - 4, 48, 14);
         ctx.fillRect(-24, headY + 4, 60, 6);
-      } else if (config.accessoryId === 'glasses') {
+      } else if (hatStyle === 'beanie') {
+        ctx.fillStyle = config.shirtColor;
+        ctx.fillRect(-24, headY - 10, 48, 18);
+        ctx.fillStyle = config.trouserColor;
+        ctx.fillRect(-26, headY + 4, 52, 6);
+        ctx.fillStyle = config.shirtColor;
+        ctx.beginPath();
+        ctx.arc(0, headY - 14, 6, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (hatStyle === 'crown') {
+        ctx.fillStyle = '#FFE85A';
+        ctx.fillRect(-20, headY - 8, 40, 10);
+        ctx.beginPath();
+        ctx.moveTo(-20, headY - 8);
+        ctx.lineTo(-14, headY - 16);
+        ctx.lineTo(-7, headY - 8);
+        ctx.lineTo(0, headY - 18);
+        ctx.lineTo(7, headY - 8);
+        ctx.lineTo(14, headY - 16);
+        ctx.lineTo(20, headY - 8);
+        ctx.closePath();
+        ctx.fill();
+      } else if (config.accessoryId === 'headband') {
+        ctx.fillStyle = '#FFE85A';
+        ctx.fillRect(-24, headY + 8, 48, 8);
+      }
+
+      if (config.accessory === 'glasses' || config.accessoryId === 'glasses') {
         ctx.strokeStyle = '#102F3A';
         ctx.lineWidth = 2;
         ctx.strokeRect(-16, headY + 12, 12, 10);
@@ -614,6 +625,12 @@ export const ArcadeCourt2D: React.FC<ArcadeCourt2DProps> = ({
         ctx.moveTo(-4, headY + 17);
         ctx.lineTo(4, headY + 17);
         ctx.stroke();
+      } else if (config.accessory === 'earrings') {
+        ctx.fillStyle = '#FFE85A';
+        ctx.beginPath();
+        ctx.arc(-24, headY + 24, 3, 0, Math.PI * 2);
+        ctx.arc(24, headY + 24, 3, 0, Math.PI * 2);
+        ctx.fill();
       }
 
       // Arms & Hands

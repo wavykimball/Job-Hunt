@@ -9,6 +9,12 @@ export interface CharacterAppearance {
   skinColor: string;
   shoesColor: string;
   accessoryId: string | null;
+  // Authentic start.ng styling fields
+  body?: 'male' | 'female' | string;
+  hair?: 'short' | 'afro' | 'braids' | 'bun' | 'ponytail' | 'dreads' | 'bald' | string;
+  hairColor?: string;
+  hat?: 'none' | 'cap' | 'beanie' | 'tophat' | 'crown' | string;
+  accessory?: 'none' | 'glasses' | 'earrings' | 'beard' | 'scarf' | 'backpack' | string;
 }
 
 export type EmploymentStatus = 'unemployed' | 'active' | 'paused' | 'ended';

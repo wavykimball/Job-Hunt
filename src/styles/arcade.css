@@ -398,6 +398,60 @@ h1, h2, h3, h4, .font-display {
   max-width: 90%;
 }
 
+/* Right Side Rail: Lockers (Wardrobe) & Jobs (Missions) matching reference layout */
+.dashboard-right-rail {
+  position: absolute;
+  right: 20px;
+  top: 76px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 60;
+  pointer-events: auto;
+}
+
+.dashboard-right-rail .jobs-mission-btn {
+  position: static;
+  right: auto;
+  top: auto;
+}
+
+/* Lockers Action Button (Matching reference Lockers card) */
+.lockers-arcade-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #FFFFFF;
+  border: 2.5px solid var(--color-navy);
+  border-radius: var(--radius-lg);
+  padding: 9px 18px 9px 14px;
+  box-shadow: 0 4px 0 var(--color-navy), 0 8px 18px rgba(16, 47, 58, 0.22);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: transform var(--motion-fast) ease, box-shadow var(--motion-fast) ease, background-color var(--motion-fast) ease;
+  user-select: none;
+  -webkit-user-select: none;
+  text-decoration: none;
+}
+
+.lockers-arcade-btn:hover {
+  transform: translateY(-2px);
+  background: #FFFFFF;
+  box-shadow: 0 6px 0 var(--color-navy), 0 12px 24px rgba(16, 47, 58, 0.28);
+}
+
+.lockers-arcade-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 var(--color-navy), 0 4px 8px rgba(16, 47, 58, 0.15);
+}
+
+.lockers-btn-icon-wrapper {
+  color: var(--color-coral);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Floating "Jobs" Action Button (Styled like reference Missions button) */
 .jobs-mission-btn {
   position: absolute;
@@ -418,6 +472,11 @@ h1, h2, h3, h4, .font-display {
   user-select: none;
   -webkit-user-select: none;
   text-decoration: none;
+  white-space: nowrap;
+}
+
+.jobs-mission-btn.employed-jobs-btn .jobs-btn-icon-wrapper {
+  color: #08BFE8;
 }
 
 .jobs-mission-btn:hover {
@@ -489,117 +548,268 @@ h1, h2, h3, h4, .font-display {
   z-index: 20;
 }
 
-/* Floating Employment Status Pill directly above character's head */
-.character-head-status-pill {
+/* --- ARCADE LEFT RAIL LAYOUT (Character is centered & unobstructed) --- */
+.dashboard-left-rail {
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  top: calc(76% - 165px);
-  z-index: 25;
-  pointer-events: none;
+  left: 20px;
+  top: 74px;
+  width: 290px;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  white-space: nowrap;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 25;
+  pointer-events: auto;
 }
 
-.character-head-status-pill .status-pill {
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
-  border-width: 2px;
-  font-size: 0.85rem;
-  padding: 5px 14px;
-}
-
-/* Career Greeting Banner - Desktop */
-.career-greeting-banner {
-  width: 100%;
-  max-width: 560px;
-  margin: 0 auto 10px auto;
+/* Greeting Badge on top of left rail */
+.rail-greeting-badge {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(8px);
-  border: 3px solid var(--color-teal-dark);
-  border-radius: var(--radius-lg);
-  padding: 12px 18px;
-  pointer-events: auto;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  border: 2.5px solid var(--color-teal-dark);
+  border-radius: var(--radius-md);
+  padding: 8px 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
   display: flex;
   flex-direction: column;
 }
 
-.greeting-subtitle {
-  font-size: 0.82rem;
+.rail-greeting-sub {
+  font-size: 0.68rem;
   font-weight: 800;
   color: var(--color-teal);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-.greeting-title-row {
+.rail-greeting-row {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 8px;
 }
 
-.greeting-title {
-  font-size: 1.35rem;
+.rail-greeting-name {
+  font-size: 1.05rem;
   color: var(--color-ink);
-  margin: 0;
   font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.greeting-palette-btn {
-  width: 28px;
-  height: 28px;
-  min-height: 28px;
-}
-
-.dashboard-deck-container {
+/* Big Action Cards Stack (matching reference layout) */
+.arcade-action-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  color: #FFFFFF;
+  border: 3px solid rgba(16, 47, 58, 0.85);
+  box-shadow: 0 5px 0 rgba(16, 47, 58, 0.85), 0 8px 16px rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  transition: transform 100ms ease, box-shadow 100ms ease;
+  user-select: none;
+  text-align: left;
   width: 100%;
-  max-width: 560px;
-  margin: 0 auto;
-  pointer-events: auto;
+}
+
+.arcade-action-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 0 rgba(16, 47, 58, 0.85), 0 12px 20px rgba(0, 0, 0, 0.22);
+}
+
+.arcade-action-card:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 rgba(16, 47, 58, 0.85), 0 4px 8px rgba(0, 0, 0, 0.18);
+}
+
+.arcade-action-card.card-coral {
+  background: linear-gradient(135deg, #F23855 0%, #D82643 100%);
+}
+
+.arcade-action-card.card-cyan {
+  background: linear-gradient(135deg, #08BFE8 0%, #069EC2 100%);
+}
+
+.arcade-action-card.card-golden {
+  background: linear-gradient(135deg, #FFC629 0%, #EAA814 100%);
+  color: #102F3A;
+}
+
+.arcade-action-card.card-teal {
+  background: linear-gradient(135deg, #193A46 0%, #102F3A 100%);
+}
+
+.arcade-action-card.card-danger {
+  background: linear-gradient(135deg, #6E1B27 0%, #4D121B 100%);
+  color: #FFFFFF;
+}
+
+.arcade-action-card.card-danger:hover {
+  background: linear-gradient(135deg, #872230 0%, #5E1722 100%);
+}
+
+.arcade-card-icon-bubble {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  color: #FFFFFF;
+}
+
+.arcade-card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.arcade-card-title {
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.arcade-card-sub {
+  font-size: 0.74rem;
+  font-weight: 700;
+  opacity: 0.92;
+  margin-top: 2px;
+  line-height: 1.25;
+}
+
+.arcade-card-tag {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 0.70rem;
+  font-weight: 900;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+/* Header Center Game Title */
+.hud-center-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 12px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  align-items: center;
+  pointer-events: none;
+  user-select: none;
+  z-index: 50;
 }
 
-.dashboard-deck-card {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(8px);
+.hud-title-text {
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  font-weight: 900;
+  letter-spacing: 2.5px;
+  margin: 0;
+  line-height: 1;
+  color: var(--color-navy);
+  text-shadow: none;
+  filter: none;
+  text-transform: uppercase;
+}
+
+/* Character Callout / Speech Bubble directly above character's head */
+.character-speech-bubble {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 25%;
+  z-index: 25;
+  pointer-events: none;
+  background: rgba(255, 255, 255, 0.96);
   border: 3px solid var(--color-teal-dark);
-  padding: 18px 20px;
+  border-radius: 20px;
+  padding: 8px 18px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-width: 360px;
+  animation: speechFloat 3s ease-in-out infinite;
 }
 
-.dashboard-explainer-pill {
-  width: 100%;
-  max-width: 540px;
-  margin: 0 auto;
-  background: rgba(25, 58, 70, 0.90);
-  backdrop-filter: blur(4px);
-  color: var(--color-paper);
+.character-speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -11px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 11px solid var(--color-teal-dark);
+}
+
+@keyframes speechFloat {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-5px); }
+}
+
+.speech-bubble-tag {
+  font-size: 0.70rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.speech-bubble-text {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--color-ink);
+  line-height: 1.3;
+}
+
+/* Bottom Left Informational Hint (Looks less like a button) */
+.dashboard-bottom-left-tip {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(16, 47, 58, 0.90);
+  backdrop-filter: blur(6px);
+  border: 1.5px solid var(--color-cyan);
   border-radius: var(--radius-pill);
-  padding: 8px 18px;
+  padding: 8px 16px;
+  color: var(--color-paper);
   font-size: 0.82rem;
   font-weight: 700;
-  text-align: center;
-  border: 1.5px solid var(--color-cyan);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.22);
-  line-height: 1.35;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+  z-index: 25;
 }
 
-.explainer-text-desktop {
-  display: inline;
+.dashboard-bottom-left-tip .tip-icon {
+  font-size: 1rem;
 }
 
-.explainer-text-mobile {
-  display: none;
+.dashboard-bottom-left-tip .tip-text {
+  line-height: 1.25;
 }
 
 .working-top-nav {
   position: absolute;
-  top: 56px;
-  left: 14px;
-  right: 14px;
+  top: 74px;
+  left: 16px;
+  right: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -625,12 +835,9 @@ h1, h2, h3, h4, .font-display {
 
 /* Mobile Responsiveness (Small screens, iPhone, Android) */
 @media (max-width: 640px) {
-  .nav-btn-text-full {
-    display: none !important;
-  }
-
+  .nav-btn-text-full,
   .nav-btn-text-short {
-    display: inline !important;
+    display: none !important;
   }
 
   .game-hud {
@@ -640,12 +847,30 @@ h1, h2, h3, h4, .font-display {
 
   .coin-badge {
     padding: 4px 10px;
-    font-size: 0.92rem;
+    font-size: 0.90rem;
     gap: 4px;
   }
 
+  .hud-center-title {
+    top: 8px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+
+  .hud-title-text {
+    font-size: 1.4rem !important;
+    letter-spacing: 1.5px !important;
+  }
+
+  /* 4 menu items stack right under the JOB HUNT text but to the left */
   .hud-actions {
-    gap: 5px;
+    position: absolute !important;
+    top: 48px !important;
+    left: 10px !important;
+    right: auto !important;
+    display: flex !important;
+    gap: 6px !important;
+    z-index: 60 !important;
   }
 
   .arcade-btn-icon {
@@ -654,6 +879,42 @@ h1, h2, h3, h4, .font-display {
     min-height: 34px !important;
     min-width: 34px !important;
     padding: 0 !important;
+    border-radius: var(--radius-md) !important;
+  }
+
+  /* Right floating Other Jobs button: stays on the right, icon-only on mobile */
+  .jobs-mission-btn {
+    position: absolute !important;
+    right: 10px !important;
+    top: 48px !important;
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: var(--radius-md) !important;
+    z-index: 60 !important;
+  }
+
+  .jobs-btn-text {
+    display: none !important;
+  }
+
+  .jobs-btn-icon-wrapper {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .jobs-btn-badge {
+    top: -5px !important;
+    right: -5px !important;
+    min-width: 17px !important;
+    height: 17px !important;
+    font-size: 0.65rem !important;
   }
 
   .bottom-overlay {
@@ -686,25 +947,6 @@ h1, h2, h3, h4, .font-display {
     padding: 10px 14px;
   }
 
-  .jobs-mission-btn {
-    right: 10px !important;
-    top: 56px !important;
-    padding: 5px 10px 5px 8px !important;
-    gap: 6px !important;
-  }
-
-  .jobs-btn-text {
-    font-size: 0.88rem !important;
-  }
-
-  .jobs-btn-badge {
-    top: -6px !important;
-    right: -6px !important;
-    min-width: 18px !important;
-    height: 18px !important;
-    font-size: 0.68rem !important;
-  }
-
   .dashboard-screen-overlay {
     padding: 10px !important;
     padding-bottom: max(22px, env(safe-area-inset-bottom, 22px)) !important;
@@ -720,53 +962,77 @@ h1, h2, h3, h4, .font-display {
     padding: 4px 10px !important;
   }
 
-  /* White Career Greeting Banner moves to top-left only on mobile */
-  .career-greeting-banner {
+  /* Mobile Action buttons: displayed with ONLY their icons without text in a bottom dock */
+  .dashboard-left-rail {
     position: absolute !important;
-    top: 56px !important;
-    left: 10px !important;
-    margin: 0 !important;
-    width: auto !important;
-    max-width: calc(100vw - 125px) !important;
-    padding: 6px 10px !important;
-    border-radius: var(--radius-md) !important;
-    border-width: 2px !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18) !important;
-    z-index: 30 !important;
-  }
-
-  .greeting-subtitle {
-    font-size: 0.65rem !important;
-    line-height: 1.1 !important;
-  }
-
-  .greeting-title-row {
-    gap: 6px !important;
-  }
-
-  .greeting-title {
-    font-size: 0.92rem !important;
-    line-height: 1.2 !important;
-  }
-
-  .greeting-palette-btn {
-    width: 22px !important;
-    height: 22px !important;
-    min-height: 22px !important;
-    min-width: 22px !important;
-    padding: 0 !important;
-  }
-
-  /* Bottom Controls Deck on Mobile */
-  .dashboard-deck-container {
-    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    top: auto !important;
     bottom: max(16px, env(safe-area-inset-bottom, 16px)) !important;
-    left: 12px !important;
-    right: 12px !important;
-    width: auto !important;
-    max-width: calc(100vw - 24px) !important;
-    gap: 8px !important;
-    margin: 0 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 0 10px !important;
+    z-index: 25 !important;
+    pointer-events: auto !important;
+  }
+
+  .rail-greeting-badge {
+    display: none !important;
+  }
+
+  .arcade-action-card {
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    min-height: 48px !important;
+    max-width: 48px !important;
+    padding: 0 !important;
+    border-radius: 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 3px 0 rgba(16, 47, 58, 0.85), 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  .arcade-action-card .arcade-card-info,
+  .arcade-action-card .arcade-card-title,
+  .arcade-action-card .arcade-card-sub {
+    display: none !important;
+  }
+
+  .arcade-card-icon-bubble {
+    width: 100% !important;
+    height: 100% !important;
+    background: transparent !important;
+    border: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* Hide bottom-left tip on mobile to avoid clutter */
+  .dashboard-bottom-left-tip {
+    display: none !important;
+  }
+
+  .character-speech-bubble {
+    top: 22% !important;
+    max-width: calc(100vw - 32px) !important;
+    padding: 6px 12px !important;
+    border-radius: 14px !important;
+    border-width: 2px !important;
+  }
+
+  .speech-bubble-tag {
+    font-size: 0.62rem !important;
+  }
+
+  .speech-bubble-text {
+    font-size: 0.78rem !important;
   }
 
   .arcade-card.dashboard-deck-card,
@@ -801,15 +1067,48 @@ h1, h2, h3, h4, .font-display {
   }
 
   .working-top-nav {
-    top: 52px !important;
-    left: 8px !important;
-    right: 8px !important;
+    top: 48px !important;
+    left: 10px !important;
+    right: 10px !important;
     gap: 6px !important;
+  }
+
+  .working-top-nav button {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: var(--radius-md) !important;
+  }
+
+  .working-top-nav button span {
+    display: none !important;
   }
 
   .working-hud-center {
     top: 96px !important;
     width: 96% !important;
+  }
+
+  .jobhunt-top-nav {
+    top: 48px !important;
+    left: 10px !important;
+  }
+
+  .jobhunt-top-nav button {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: var(--radius-md) !important;
   }
 }
 

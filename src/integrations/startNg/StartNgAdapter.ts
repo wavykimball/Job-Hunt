@@ -145,6 +145,11 @@ export class StartNgAdapter implements IStartNgAdapter {
         : DEFAULT_CHARACTER_APPEARANCE.skinColor,
       shoesColor: DEFAULT_CHARACTER_APPEARANCE.shoesColor,
       accessoryId,
+      body: style.body || DEFAULT_CHARACTER_APPEARANCE.body,
+      hair: style.hair || DEFAULT_CHARACTER_APPEARANCE.hair,
+      hairColor: style.hairColor || DEFAULT_CHARACTER_APPEARANCE.hairColor,
+      hat: style.hat || DEFAULT_CHARACTER_APPEARANCE.hat,
+      accessory: style.accessory || DEFAULT_CHARACTER_APPEARANCE.accessory,
     };
   }
 

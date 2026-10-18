@@ -97,7 +97,12 @@ export const App: React.FC = () => {
         current.shirtColor !== normalized.shirtColor ||
         current.trouserColor !== normalized.trouserColor ||
         current.skinColor !== normalized.skinColor ||
-        current.accessoryId !== normalized.accessoryId;
+        current.accessoryId !== normalized.accessoryId ||
+        current.hair !== normalized.hair ||
+        current.hairColor !== normalized.hairColor ||
+        current.hat !== normalized.hat ||
+        current.accessory !== normalized.accessory ||
+        current.body !== normalized.body;
 
       if (isDifferent) {
         gameStorage.savePlayerAppearance(player.id, normalized).catch(() => {});
@@ -459,13 +464,18 @@ export const App: React.FC = () => {
         onSignOut={handleSignOut}
       />
 
-      {/* Floating Jobs Mission-style Button (Dashboard only) */}
+      {/* Right Side Rail: Jobs / Apply to Other Jobs Button */}
       {view === 'DASHBOARD' && (
         <JobsButton
           badgeCount={applications.length}
+          isEmployed={Boolean(currentEmployment && currentEmployment.status !== 'ended')}
           onClick={() => {
             audio.playClick();
-            setIsJobsModalOpen(true);
+            if (currentEmployment && currentEmployment.status !== 'ended') {
+              setView('JOB_HUNT');
+            } else {
+              setIsJobsModalOpen(true);
+            }
           }}
         />
       )}
